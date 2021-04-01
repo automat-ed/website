@@ -27,6 +27,13 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
     <script type="application/ld+json">{
 		"@context": "http://schema.org",
 		"@type": "Organization",
@@ -95,23 +102,12 @@
               <div class="u-container-style u-layout-cell u-size-20 u-layout-cell-3">
                 <div class="u-container-layout u-valign-top u-container-layout-3">
                   <img src="images/SoftwareArchitecture2.png" alt="" class="u-expanded-width u-image u-image-default u-image-1" data-image-width="4016" data-image-height="2281">
-                  <p class="u-text u-text-3">In order to implement our autonomous system, we utilized the Robot 
+                  <p class="u-text u-text-3" spellcheck="false">In order to implement our autonomous system, we utilized the Robot 
 Operating System (ROS) and its many packages that are available with it.
  In fact, both our localisation and navigation components use 
 pre-existing packages from the ROS ecosystem saving us time and effort. 
 It also increases the reliability of our system as these packages will 
 be well tested being open-source and free to use.<br>
-                    <br>The black box 
-marked “Route Controller” is the only part of the system which we were 
-unable to implement in time. This controller would have been responsible
- for the storage of routes - represented as a series of GPS coordinates -
- downloaded from our server as well as feeding the next goal position 
-(derived from a GPS coordinate) to the navigation stack. In this way, 
-the navigation stack would have moved the robot to each GPS coordinate 
-stored in the route. This also allows us to stop the robot by passing in
- an appropriate command from the Route Controller to the navigation 
-stack depending on the state published by the state machine. Further 
-details can be found below.
                   </p>
                 </div>
               </div>
@@ -136,7 +132,7 @@ details can be found below.
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
                 <div class="u-container-layout u-valign-top u-container-layout-2">
                   <img src="images/Localization1.png" alt="" class="u-expanded-width u-image u-image-default u-image-1" data-image-width="1955" data-image-height="825">
-                  <p class="u-text u-text-3" spellcheck="false">In order to be able to calculate the position of the robot, we make use of 5 different sensors. These can be separated into two different groups. The <span style="font-weight: 700;" class="u-text-custom-color-4">first group</span> are the proprioceptive sensors - that is the sensors that measure the internal state of the robot.<br>
+                  <p class="u-text u-text-3" spellcheck="false">In order to be able to calculate the position of the robot, we make use of 5 different sensors. These can be separated into two different groups. The <span style="font-weight: 700;" class="u-text-custom-color-4">first group</span> are the proprioceptive sensors - that is the sensors that measure the internal state of the robot. The <span style="font-weight: 700;" class="u-text-custom-color-3">second group</span> contains our GPS sensor which measures the position of the robot in the world as GPS coordinates.<br>
                     <br>It is important to note here that the first group, the <span style="font-weight: 700;" class="u-text-custom-color-4">proprioceptive sensors</span>, give us continuous sensor readings, whereas our GPS sensor is only able to give us discrete readings.
                   </p>
                 </div>
@@ -199,7 +195,95 @@ details can be found below.
         </p>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-3 u-section-5" id="sec-f214">
+    <section class="u-align-center u-clearfix u-custom-color-3 u-section-5" id="sec-0ebb">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <h2 class="u-text u-text-1">Navigation</h2>
+        <p class="u-text u-text-2">The Navigation system that allows our robot to autonomously navigate towards goal positions makes use of the ROS move_base package<br>For the navigation system to work, we need:
+        </p>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-3 u-section-6" id="sec-048b">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-gutter-10 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-col">
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="660" data-image-height="198">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
+                  </div>
+                  <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
+                    <div class="u-container-layout u-container-layout-2">
+                      <h2 class="u-text u-text-1" spellcheck="false">1. Occupancy Grid<br>
+                      </h2>
+                      <p class="u-text u-text-2" spellcheck="false">Think of this as a matrix of 0s and 1s, where the 0s let the robot know that the position corresponding to that pixel on the map is safe to travel on, whereas 1s are “inaccessible” areas, either because they are occupied by an object or simply because we don’t want the robot to go there (this allows us to make sure the robot does not go off a path). <br>
+                        <br>Furthermore, the grid can be transformed into a costmap, which provides some extra features like modifying the “inflation radius” of an obstacle (basically make the robot think the object is bigger/smaller than it actually is), should we decide our robot needs to maintain a higher/lower distance from obstacles.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-align-left u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-3">
+                    <div class="u-container-layout u-container-layout-3">
+                      <h2 class="u-text u-text-3" spellcheck="false">2. Position and Orientation<br>
+                      </h2>
+                      <p class="u-text u-text-4" spellcheck="false">The position and orientation of the robot, provided by the localisation stack. The robot needs to know where on the map it is located to be able to generate a plan.</p>
+                    </div>
+                  </div>
+                  <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-4" src="">
+                    <div class="u-container-layout u-container-layout-4">
+                      <h2 class="u-text u-text-default u-text-5" spellcheck="false">3. A Goal<br>
+                      </h2>
+                      <p class="u-text u-text-default u-text-6" spellcheck="false">A goal, that is, where we would like our robot to travel to.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-3 u-section-7" id="sec-decc">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-gutter-10 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-col">
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="324" data-image-height="301">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
+                  </div>
+                  <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
+                    <div class="u-container-layout u-container-layout-2">
+                      <h2 class="u-text u-text-1" spellcheck="false">4. LiDAR<br>
+                      </h2>
+                      <p class="u-text u-text-2" spellcheck="false">A LiDAR, providing information on the distance of objects around the robot. Should the robot generate a plan that intersects an obstacle, it will readjust the trajectory as to navigate around the object and ultimately realign itself with the original plan</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-align-left u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-3">
+                    <div class="u-container-layout u-container-layout-3">
+                      <h2 class="u-text u-text-3" spellcheck="false">Summary</h2>
+                      <p class="u-text u-text-4" spellcheck="false">The basic idea behind the navigation stack is simple: at any point in time, multiple trajectories are considered, and the one that does not hit any objects, does not go off path and leads to the goal position is chosen and followed.</p>
+                    </div>
+                  </div>
+                  <div class="u-container-style u-image u-layout-cell u-right-cell u-size-30 u-image-2" src="" data-image-width="543" data-image-height="269">
+                    <div class="u-container-layout u-valign-middle u-container-layout-4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-1 u-section-8" id="sec-f214">
       <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-align-center u-text u-text-1">State Machine<br>
         </h2>
@@ -207,7 +291,7 @@ details can be found below.
         </p>
         <div class="u-expanded-width u-list u-repeater u-list-1">
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-78e7"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-78e7" style="enable-background:new 0 0 512 512;"><g><g><path d="M138.667,160c-52.928,0-96,43.072-96,96s43.072,96,96,96c52.928,0,96-43.072,96-96S191.595,160,138.667,160z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-text-black u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-78e7"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-78e7" style="enable-background:new 0 0 512 512;"><g><g><path d="M138.667,160c-52.928,0-96,43.072-96,96s43.072,96,96,96c52.928,0,96-43.072,96-96S191.595,160,138.667,160z"></path>
 </g>
 </g><g><g><path d="M373.333,117.333H138.667C62.208,117.333,0,179.541,0,256s62.208,138.667,138.667,138.667h234.667    C449.792,394.667,512,332.459,512,256S449.792,117.333,373.333,117.333z M373.333,373.333H138.667    c-64.683,0-117.333-52.629-117.333-117.333s52.651-117.333,117.333-117.333h234.667c64.683,0,117.333,52.629,117.333,117.333    S438.016,373.333,373.333,373.333z"></path>
 </g>
@@ -230,7 +314,7 @@ details can be found below.
             </div>
           </div>
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-75ba"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-75ba" style="enable-background:new 0 0 512 512;"><g><g><path d="M497.36,69.995c-7.532-7.545-19.753-7.558-27.285-0.032L238.582,300.845l-83.522-90.713    c-7.217-7.834-19.419-8.342-27.266-1.126c-7.841,7.217-8.343,19.425-1.126,27.266l97.126,105.481    c3.557,3.866,8.535,6.111,13.784,6.22c0.141,0.006,0.277,0.006,0.412,0.006c5.101,0,10.008-2.026,13.623-5.628L497.322,97.286    C504.873,89.761,504.886,77.54,497.36,69.995z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-text-black u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-75ba"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-75ba" style="enable-background:new 0 0 512 512;"><g><g><path d="M497.36,69.995c-7.532-7.545-19.753-7.558-27.285-0.032L238.582,300.845l-83.522-90.713    c-7.217-7.834-19.419-8.342-27.266-1.126c-7.841,7.217-8.343,19.425-1.126,27.266l97.126,105.481    c3.557,3.866,8.535,6.111,13.784,6.22c0.141,0.006,0.277,0.006,0.412,0.006c5.101,0,10.008-2.026,13.623-5.628L497.322,97.286    C504.873,89.761,504.886,77.54,497.36,69.995z"></path>
 </g>
 </g><g><g><path d="M492.703,236.703c-10.658,0-19.296,8.638-19.296,19.297c0,119.883-97.524,217.407-217.407,217.407    c-119.876,0-217.407-97.524-217.407-217.407c0-119.876,97.531-217.407,217.407-217.407c10.658,0,19.297-8.638,19.297-19.296    C275.297,8.638,266.658,0,256,0C114.84,0,0,114.84,0,256c0,141.154,114.84,256,256,256c141.154,0,256-114.846,256-256    C512,245.342,503.362,236.703,492.703,236.703z"></path>
 </g>
@@ -243,7 +327,7 @@ details can be found below.
             </div>
           </div>
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-icon u-icon-circle u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-d396"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-d396"><path d="m437.02 74.98c-48.353-48.352-112.64-74.98-181.02-74.98-52.03 0-102.125 15.535-144.868 44.924-4.551 3.129-5.703 9.355-2.574 13.906 3.13 4.55 9.354 5.702 13.906 2.574 39.394-27.087 85.57-41.404 133.536-41.404 130.131 0 236 105.869 236 236s-105.869 236-236 236-236-105.869-236-236c0-47.972 14.316-94.146 41.399-133.529 3.129-4.551 1.977-10.777-2.573-13.906-4.551-3.128-10.776-1.978-13.906 2.573-29.387 42.733-44.92 92.826-44.92 144.862 0 68.38 26.628 132.667 74.98 181.02 48.353 48.352 112.64 74.98 181.02 74.98s132.667-26.628 181.02-74.98c48.352-48.353 74.98-112.64 74.98-181.02s-26.628-132.667-74.98-181.02z"></path><path d="m256 462c113.589 0 206-92.411 206-206 0-23.603-4.002-46.286-11.343-67.421-.021-.055-.037-.112-.059-.166-28.035-80.491-104.674-138.413-194.598-138.413-113.588 0-206 92.411-206 206s92.412 206 206 206zm186-206c0 4.785-.182 9.529-.539 14.224-10.497.548-20.73 2.107-30.61 4.569 3.246-27.383-.838-55.476-11.696-80.734 11.53 1.97 23.016 4.178 34.446 6.622 5.457 17.482 8.399 36.063 8.399 55.319zm-66.916-65.702c15.201 27.568 20.392 60.364 14.48 91.404-45.646 18.421-81.04 57.054-95.037 104.753-25.027 7.367-52.029 7.367-77.055 0-13.996-47.698-49.39-86.332-95.036-104.752-5.912-31.037-.718-63.84 14.479-91.404 39.435-5.58 79.283-8.414 119.085-8.414 39.801 0 79.648 2.833 119.084 8.413zm-273.936 84.495c-9.88-2.461-20.112-4.021-30.609-4.569-.357-4.695-.539-9.439-.539-14.224 0-19.256 2.942-37.837 8.399-55.319 11.43-2.444 22.915-4.652 34.446-6.622-10.856 25.257-14.942 53.353-11.697 80.734zm-27.938 15.648c73.079 5.734 130.79 67.032 130.79 141.559 0 .859-.016 1.721-.032 2.583-66.551-19.422-117.781-75.114-130.758-144.142zm150.622 148.767c.106-2.407.168-4.815.168-7.209 0-8.041-.598-15.944-1.735-23.674 11.079 2.435 22.405 3.658 33.735 3.658 11.327 0 22.655-1.223 33.735-3.658-1.137 7.73-1.735 15.633-1.735 23.675 0 2.394.062 4.802.168 7.209-10.452 1.829-21.199 2.791-32.168 2.791-10.968 0-21.715-.962-32.168-2.792zm84.2-4.625c-.016-.862-.032-1.725-.032-2.583 0-74.526 57.712-135.824 130.791-141.558-12.978 69.027-64.208 124.719-130.759 144.141zm-52.032-364.583c74.918 0 139.624 44.528 169.066 108.504-55.602-11.02-112.381-16.618-169.067-16.618s-113.466 5.599-169.066 16.619c29.443-63.978 94.149-108.505 169.067-108.505z"></path><path d="m206 256c0 27.57 22.43 50 50 50s50-22.43 50-50-22.43-50-50-50-50 22.43-50 50zm50-30c16.542 0 30 13.458 30 30s-13.458 30-30 30-30-13.458-30-30 13.458-30 30-30z"></path><path d="m82.048 92.053c2.561 0 5.122-.978 7.075-2.931 3.905-3.905 3.905-10.237 0-14.142s-10.236-3.905-14.142 0l-.005.005c-3.905 3.905-3.903 10.234.002 14.139 1.952 1.954 4.511 2.929 7.07 2.929z"></path></svg>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-icon u-icon-circle u-text-black u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-d396"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-d396"><path d="m437.02 74.98c-48.353-48.352-112.64-74.98-181.02-74.98-52.03 0-102.125 15.535-144.868 44.924-4.551 3.129-5.703 9.355-2.574 13.906 3.13 4.55 9.354 5.702 13.906 2.574 39.394-27.087 85.57-41.404 133.536-41.404 130.131 0 236 105.869 236 236s-105.869 236-236 236-236-105.869-236-236c0-47.972 14.316-94.146 41.399-133.529 3.129-4.551 1.977-10.777-2.573-13.906-4.551-3.128-10.776-1.978-13.906 2.573-29.387 42.733-44.92 92.826-44.92 144.862 0 68.38 26.628 132.667 74.98 181.02 48.353 48.352 112.64 74.98 181.02 74.98s132.667-26.628 181.02-74.98c48.352-48.353 74.98-112.64 74.98-181.02s-26.628-132.667-74.98-181.02z"></path><path d="m256 462c113.589 0 206-92.411 206-206 0-23.603-4.002-46.286-11.343-67.421-.021-.055-.037-.112-.059-.166-28.035-80.491-104.674-138.413-194.598-138.413-113.588 0-206 92.411-206 206s92.412 206 206 206zm186-206c0 4.785-.182 9.529-.539 14.224-10.497.548-20.73 2.107-30.61 4.569 3.246-27.383-.838-55.476-11.696-80.734 11.53 1.97 23.016 4.178 34.446 6.622 5.457 17.482 8.399 36.063 8.399 55.319zm-66.916-65.702c15.201 27.568 20.392 60.364 14.48 91.404-45.646 18.421-81.04 57.054-95.037 104.753-25.027 7.367-52.029 7.367-77.055 0-13.996-47.698-49.39-86.332-95.036-104.752-5.912-31.037-.718-63.84 14.479-91.404 39.435-5.58 79.283-8.414 119.085-8.414 39.801 0 79.648 2.833 119.084 8.413zm-273.936 84.495c-9.88-2.461-20.112-4.021-30.609-4.569-.357-4.695-.539-9.439-.539-14.224 0-19.256 2.942-37.837 8.399-55.319 11.43-2.444 22.915-4.652 34.446-6.622-10.856 25.257-14.942 53.353-11.697 80.734zm-27.938 15.648c73.079 5.734 130.79 67.032 130.79 141.559 0 .859-.016 1.721-.032 2.583-66.551-19.422-117.781-75.114-130.758-144.142zm150.622 148.767c.106-2.407.168-4.815.168-7.209 0-8.041-.598-15.944-1.735-23.674 11.079 2.435 22.405 3.658 33.735 3.658 11.327 0 22.655-1.223 33.735-3.658-1.137 7.73-1.735 15.633-1.735 23.675 0 2.394.062 4.802.168 7.209-10.452 1.829-21.199 2.791-32.168 2.791-10.968 0-21.715-.962-32.168-2.792zm84.2-4.625c-.016-.862-.032-1.725-.032-2.583 0-74.526 57.712-135.824 130.791-141.558-12.978 69.027-64.208 124.719-130.759 144.141zm-52.032-364.583c74.918 0 139.624 44.528 169.066 108.504-55.602-11.02-112.381-16.618-169.067-16.618s-113.466 5.599-169.066 16.619c29.443-63.978 94.149-108.505 169.067-108.505z"></path><path d="m206 256c0 27.57 22.43 50 50 50s50-22.43 50-50-22.43-50-50-50-50 22.43-50 50zm50-30c16.542 0 30 13.458 30 30s-13.458 30-30 30-30-13.458-30-30 13.458-30 30-30z"></path><path d="m82.048 92.053c2.561 0 5.122-.978 7.075-2.931 3.905-3.905 3.905-10.237 0-14.142s-10.236-3.905-14.142 0l-.005.005c-3.905 3.905-3.903 10.234.002 14.139 1.952 1.954 4.511 2.929 7.07 2.929z"></path></svg>
             
             
           </span>
@@ -254,11 +338,11 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-3 u-section-6" id="carousel_13de">
+    <section class="u-clearfix u-custom-color-1 u-section-9" id="carousel_13de">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-expanded-width u-list u-repeater u-list-1">
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-0b8a"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-0b8a" style="enable-background:new 0 0 512 512;"><g><g><path d="M392.533,0H119.467c-14.114,0-25.6,11.486-25.6,25.6s11.486,25.6,25.6,25.6h273.067c14.114,0,25.6-11.486,25.6-25.6    S406.647,0,392.533,0z M392.533,34.133H119.467c-4.702,0-8.533-3.823-8.533-8.533c0-4.71,3.831-8.533,8.533-8.533h273.067    c4.702,0,8.533,3.823,8.533,8.533C401.067,30.31,397.235,34.133,392.533,34.133z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-text-custom-color-2 u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-0b8a"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-0b8a" style="enable-background:new 0 0 512 512;"><g><g><path d="M392.533,0H119.467c-14.114,0-25.6,11.486-25.6,25.6s11.486,25.6,25.6,25.6h273.067c14.114,0,25.6-11.486,25.6-25.6    S406.647,0,392.533,0z M392.533,34.133H119.467c-4.702,0-8.533-3.823-8.533-8.533c0-4.71,3.831-8.533,8.533-8.533h273.067    c4.702,0,8.533,3.823,8.533,8.533C401.067,30.31,397.235,34.133,392.533,34.133z"></path>
 </g>
 </g><g><g><path d="M392.533,460.8H119.467c-14.114,0-25.6,11.486-25.6,25.6s11.486,25.6,25.6,25.6h273.067c14.114,0,25.6-11.486,25.6-25.6    S406.647,460.8,392.533,460.8z M392.533,494.933H119.467c-4.702,0-8.533-3.823-8.533-8.533s3.831-8.533,8.533-8.533h273.067    c4.702,0,8.533,3.823,8.533,8.533S397.235,494.933,392.533,494.933z"></path>
 </g>
@@ -282,7 +366,7 @@ details can be found below.
             </div>
           </div>
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-5714"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-5714" style="enable-background:new 0 0 512 512;"><g><g><path d="M418.998,498.791l-25.075-73.998c-1.375-4.06-5.185-6.791-9.471-6.791h-1.455v-145.01    c0-70.026-56.97-126.997-126.997-126.997s-126.997,56.97-126.997,126.997v145.01h-1.455c-4.286,0-8.096,2.731-9.471,6.791    l-25.074,73.998c-1.035,3.053-0.534,6.416,1.344,9.036c1.878,2.619,4.903,4.173,8.127,4.173h307.053    c3.224,0,6.249-1.554,8.127-4.173C419.532,505.207,420.033,501.844,418.998,498.791z M149.003,272.993    c0-58.998,47.999-106.997,106.997-106.997c58.998,0,106.997,47.999,106.997,106.997v145.01H149.003V272.993z M116.421,492.001    l18.297-53.998h242.563l18.298,53.998H116.421z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-text-custom-color-2 u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-5714"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-5714" style="enable-background:new 0 0 512 512;"><g><g><path d="M418.998,498.791l-25.075-73.998c-1.375-4.06-5.185-6.791-9.471-6.791h-1.455v-145.01    c0-70.026-56.97-126.997-126.997-126.997s-126.997,56.97-126.997,126.997v145.01h-1.455c-4.286,0-8.096,2.731-9.471,6.791    l-25.074,73.998c-1.035,3.053-0.534,6.416,1.344,9.036c1.878,2.619,4.903,4.173,8.127,4.173h307.053    c3.224,0,6.249-1.554,8.127-4.173C419.532,505.207,420.033,501.844,418.998,498.791z M149.003,272.993    c0-58.998,47.999-106.997,106.997-106.997c58.998,0,106.997,47.999,106.997,106.997v145.01H149.003V272.993z M116.421,492.001    l18.297-53.998h242.563l18.298,53.998H116.421z"></path>
 </g>
 </g><g><g><path d="M256,0c-5.522,0-10,4.478-10,10v59.999c0,5.522,4.477,10,10,10c5.522,0,10-4.478,10-10V10C266,4.478,261.522,0,256,0z"></path>
 </g>
@@ -323,7 +407,7 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-3 u-section-7" id="sec-e051">
+    <section class="u-clearfix u-custom-color-1 u-section-10" id="sec-e051">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -345,9 +429,9 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-1 u-section-8" id="sec-e6c2">
+    <section class="u-clearfix u-custom-color-3 u-section-11" id="sec-e6c2">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <h2 class="u-align-center u-text u-text-1">Human Detection<br>
+        <h2 class="u-align-center u-text u-text-1">Human Recognition<br>
         </h2>
         <div class="u-clearfix u-expanded-width u-gutter-10 u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -385,7 +469,7 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-1 u-section-9" id="sec-f2bb">
+    <section class="u-clearfix u-custom-color-3 u-section-12" id="sec-f2bb">
       <div class="u-clearfix u-sheet u-sheet-1">
         <p class="u-text u-text-1">The “meta” RGB image is fed to a pre-trained state-of-the-art neural network called YOLO. This neural network is able to detect humans (and many other classes) within the image and returns information about the bounding boxes for each object. The returned information includes the class of the object in the bounding box as well as the coordinates of the bounding boxes within the image.<br>
           <br>For each human bounding box, we retrieve all the pixels of the “meta” depth image that fall inside the bounding box (we can do this because we know the coordinates of the bounding box) and take the average of these values. This gives us an estimate of how far away the human in the bounding box is from the camera and hence the robot. Selecting the smallest distance out of all bounding boxes gives us the distance to the closest human. If this distance is lower than our threshold, we send a message to the state machine to stop the robot.<br>
@@ -393,9 +477,154 @@ details can be found below.
         </p>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-3 u-section-10" id="sec-b170">
+    <section class="u-clearfix u-custom-color-1 u-section-13" id="sec-f5eb">
       <div class="u-clearfix u-sheet u-sheet-1">
-        <h2 class="u-text u-text-1">Web Portal Communication Protocols<br>
+        <h2 class="u-align-center u-text u-text-1">Extensions for Autonomous Team<br>
+        </h2>
+        <p class="u-align-center u-text u-text-2">The Autonomous system was unable to be fully implemented in time. In the software architecture diagram, we see that there were two black boxes marked as “planned”:</p>
+        <div class="u-list u-repeater u-list-1">
+          <div class="u-align-center u-container-style u-list-item u-repeater-item">
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-4199"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-4199"><g><path d="m94.744 296.184c-8.817 5.23-14.744 14.842-14.744 25.816 0 16.542 13.458 30 30 30 13.036 0 24.152-8.361 28.28-20h77.72c16.542 0 30 13.458 30 30s-13.458 30-30 30h-120c-27.57 0-50 22.43-50 50s22.43 50 50 50h100c5.523 0 10-4.477 10-10s-4.477-10-10-10h-100c-16.542 0-30-13.458-30-30s13.458-30 30-30h120c27.57 0 50-22.43 50-50s-22.43-50-50-50h-77.72c-2.365-6.668-7.023-12.257-13.024-15.816l76.378-125.316c12.015-18.06 18.366-39.104 18.366-60.868 0-60.654-49.346-110-110-110s-110 49.346-110 110c0 21.764 6.351 42.808 18.366 60.868zm15.256 35.816c-5.514 0-10-4.486-10-10s4.486-10 10-10 10 4.486 10 10-4.486 10-10 10zm0-312c49.626 0 90 40.374 90 90 0 17.868-5.227 35.135-15.115 49.935-.077.115-.152.232-.224.351l-74.661 122.499s-74.808-122.735-74.885-122.85c-9.888-14.8-15.115-32.067-15.115-49.935 0-49.626 40.374-90 90-90z"></path><path d="m110 160c27.57 0 50-22.43 50-50s-22.43-50-50-50-50 22.43-50 50 22.43 50 50 50zm0-80c16.542 0 30 13.458 30 30s-13.458 30-30 30-30-13.458-30-30 13.458-30 30-30z"></path><path d="m402 166c-60.654 0-110 49.346-110 110 0 21.799 6.371 42.875 18.424 60.954l76.093 119.36c-5.892 3.565-10.461 9.101-12.796 15.686h-87.721c-5.523 0-10 4.477-10 10s4.477 10 10 10h87.72c4.128 11.639 15.243 20 28.28 20 16.542 0 30-13.458 30-30 0-10.881-5.823-20.426-14.516-25.686l76.093-119.36c12.052-18.079 18.423-39.155 18.423-60.954 0-60.654-49.346-110-110-110zm0 326c-5.514 0-10-4.486-10-10s4.486-10 10-10 10 4.486 10 10-4.486 10-10 10zm74.885-166.065c-.039.06-74.885 117.462-74.885 117.462s-74.846-117.403-74.885-117.462c-9.888-14.8-15.115-32.067-15.115-49.935 0-49.626 40.374-90 90-90s90 40.374 90 90c0 17.868-5.227 35.135-15.115 49.935z"></path><path d="m402 226c-27.57 0-50 22.43-50 50s22.43 50 50 50 50-22.43 50-50-22.43-50-50-50zm0 80c-16.542 0-30-13.458-30-30s13.458-30 30-30 30 13.458 30 30-13.458 30-30 30z"></path><circle cx="241" cy="482" r="10"></circle>
+</g></svg>
+            
+            
+          </span>
+              <h3 class="u-text u-text-3">Responsive</h3>
+              <p class="u-text u-text-4">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+            </div>
+          </div>
+          <div class="u-align-center u-container-style u-list-item u-repeater-item">
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 520.963 520.964" style=""><use xlink:href="#svg-a896"></use></svg><svg class="u-svg-content" viewBox="0 0 520.963 520.964" x="0px" y="0px" id="svg-a896" style="enable-background:new 0 0 520.963 520.964;"><g><path d="M519.296,355.159c1.052,0.798,1.667,2.057,1.667,3.381s-0.615,2.583-1.667,3.381l-104.78,80.564   c-1.531,1.17-3.647,1.182-5.178,0.023c-1.537-1.165-2.104-3.198-1.401-4.989l17.461-44.188   c-79.358-2.985-124.345-31.321-155.813-64.203c11.709-13.358,21.426-26.899,30.292-39.253c4.397-6.142,8.618-11.999,12.851-17.603   c23.867,28.064,52.919,48.119,112.422,50.845l-17.212-43.562c-0.697-1.791-0.13-3.824,1.401-4.989   c0.762-0.566,1.667-0.862,2.571-0.862c0.916,0,1.844,0.296,2.612,0.881L519.296,355.159z M106.447,246.372   c0.771,0.594,1.69,0.883,2.61,0.883c0.901,0,1.817-0.295,2.574-0.866c1.537-1.156,2.11-3.195,1.398-4.986l-17.076-43.246   c59.237,3.777,88.369,24.223,112.295,52.429c4.176-5.526,8.34-11.295,12.672-17.342c8.911-12.424,18.693-26.051,30.482-39.51   c-31.522-33.023-76.542-61.691-155.935-65.843l17.561-44.449c0.706-1.791,0.133-3.824-1.398-4.989   c-1.534-1.156-3.649-1.144-5.175,0.027L1.664,159.04C0.612,159.838,0,161.097,0,162.421c0,1.327,0.618,2.586,1.664,3.384   L106.447,246.372z M288.895,282.008c31.297-43.637,56.56-78.773,136.112-83.845l-17.07,43.246   c-0.703,1.791-0.136,3.824,1.396,4.986c0.768,0.57,1.666,0.866,2.577,0.866c0.91,0,1.832-0.295,2.606-0.884l104.78-80.567   c1.052-0.798,1.667-2.057,1.667-3.384c0-1.324-0.615-2.583-1.667-3.381l-104.78-80.566c-1.531-1.171-3.647-1.183-5.178-0.027   c-1.537,1.165-2.104,3.198-1.401,4.989l17.567,44.449c-116.738,6.115-159.195,65.213-193.628,113.221   c-31.2,43.515-56.241,78.353-136.057,82.006l17.209-43.562c0.706-1.791,0.133-3.824-1.398-4.989   c-0.756-0.566-1.667-0.862-2.574-0.862c-0.914,0-1.838,0.296-2.61,0.881L1.664,355.159C0.612,355.957,0,357.216,0,358.54   s0.618,2.583,1.664,3.381l104.783,80.564c1.534,1.17,3.65,1.182,5.175,0.023c1.54-1.165,2.113-3.198,1.401-4.989l-17.458-44.188   C212.158,388.951,254.585,329.861,288.895,282.008z"></path>
+</g></svg>
+            
+            
+          </span>
+              <h3 class="u-text u-text-5" spellcheck="false">Command Multiplexer<br>
+              </h3>
+              <p class="u-text u-text-6">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+            </div>
+          </div>
+        </div>
+        <p class="u-align-left u-text u-text-7">In this section, we describe the functionality that these two components would have had, had they been implemented in time.<br>
+          <br>The black box marked “Route Controller” would have been responsible for the storage of routes - represented as a series of GPS coordinates - downloaded from our server as well as feeding the next goal position (derived from a GPS coordinate) to the navigation stack. In this way, the navigation stack would have moved the robot to each GPS coordinate stored in the route. This also allows us to stop the robot by passing in an appropriate command from the Route Controller to the navigation stack depending on the state published by the state machine. Further details can be found below.<br>
+          <br>The box marked “Command Multiplexer” would have been responsible for sending the velocity commands to the robot in simulation. The commands it sends would depend on the state of the robot (see below for more information about the state machine). For example, in the DRIVING state, the Command Multiplexer would send to the robot the velocity commands from the navigation component, whereas in the WAITING or EMERGENCY states, it would send commands to stop the robot.
+        </p>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-3 u-section-14" id="sec-655f">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h2 class="u-align-center u-text u-text-1">Portal</h2>
+        <p class="u-align-center u-text u-text-2">Fundamentally, our Portal is composed of three components.</p>
+        <div class="u-list u-repeater u-list-1">
+          <div class="u-align-center u-container-style u-list-item u-repeater-item">
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-text-white u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 24 24" style=""><use xlink:href="#svg-5eeb"></use></svg><svg class="u-svg-content" viewBox="0 0 24 24" id="svg-5eeb"><path d="m12 6c-1.228 0-12-.084-12-3s10.772-3 12-3 12 .084 12 3-10.772 3-12 3zm-10.412-3c.732.568 4.245 1.5 10.412 1.5s9.68-.932 10.412-1.5c-.732-.568-4.245-1.5-10.412-1.5s-9.68.932-10.412 1.5zm20.939.116h.01z"></path><path d="m12 12c-1.228 0-12-.084-12-3 0-.414.336-.75.75-.75.385 0 .702.29.745.664.462.553 4.012 1.586 10.505 1.586s10.043-1.033 10.505-1.586c.043-.374.36-.664.745-.664.414 0 .75.336.75.75 0 2.916-10.772 3-12 3zm10.5-3.001c0 .001 0 .001 0 0zm-21 0c0 .001 0 .001 0 0z"></path><path d="m12 18c-1.228 0-12-.084-12-3 0-.414.336-.75.75-.75.385 0 .702.29.745.664.462.553 4.012 1.586 10.505 1.586s10.043-1.033 10.505-1.586c.043-.374.36-.664.745-.664.414 0 .75.336.75.75 0 2.916-10.772 3-12 3zm10.5-3.001c0 .001 0 .001 0 0zm-21 0c0 .001 0 .001 0 0z"></path><path d="m12 24c-1.228 0-12-.084-12-3v-18c0-.414.336-.75.75-.75s.75.336.75.75v17.919c.481.556 4.03 1.581 10.5 1.581s10.019-1.025 10.5-1.581v-17.919c0-.414.336-.75.75-.75s.75.336.75.75v18c0 2.916-10.772 3-12 3z"></path><circle cx="5" cy="14" r="1"></circle><circle cx="5" cy="8" r="1"></circle><circle cx="5" cy="20" r="1"></circle></svg>
+            
+            
+          </span>
+              <h3 class="u-text u-text-3" spellcheck="false">MongoDB Database<br>
+              </h3>
+              <p class="u-text u-text-4" spellcheck="false">This is responsible for storing all of the data that we need for the Portal</p>
+            </div>
+          </div>
+          <div class="u-align-center u-container-style u-list-item u-repeater-item">
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-text-white u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="-25 0 445 445.6" style=""><use xlink:href="#svg-7c38"></use></svg><svg class="u-svg-content" viewBox="-25 0 445 445.6" id="svg-7c38"><path d="m385.082031 102.800781c-16.601562-26-52.300781-36.800781-100.402343-30.601562-1.699219.199219-3.5.5-5.199219.699219-.699219-1.597657-1.398438-3.199219-2.199219-4.796876-20.699219-43.902343-49-68.101562-79.800781-68.101562s-59.199219 24.199219-79.800781 68.101562c-.699219 1.597657-1.5 3.199219-2.199219 4.796876-1.800781-.296876-3.5-.5-5.199219-.699219-48.199219-6.300781-83.800781 4.601562-100.402344 30.601562-16.597656 26-11.5 62.898438 14.300782 103.898438 3.402343 5.402343 7.101562 10.800781 11.101562 16.101562-4 5.398438-7.699219 10.699219-11.101562 16.097657-25.800782 41-30.898438 78-14.300782 103.902343 13.5 21.199219 39.703125 32.300781 75 32.300781 8.460938-.046874 16.910156-.613281 25.300782-1.703124 1.699218-.199219 3.5-.5 5.199218-.699219.703125 1.601562 1.402344 3.199219 2.203125 4.800781 20.699219 43.898438 49 68.101562 79.796875 68.101562 30.800782 0 59.203125-24.203124 79.800782-68.101562.699218-1.601562 1.5-3.199219 2.199218-4.800781 1.800782.300781 3.5.5 5.203125.699219 8.382813 1.136718 16.835938 1.703124 25.296875 1.703124 35.300782 0 61.5-11.101562 75-32.300781 16.601563-26 11.5-62.902343-14.296875-103.902343-3.402343-5.398438-7.101562-10.796876-11.101562-16.097657 4-5.402343 7.699219-10.699219 11.101562-16.101562 26.097657-41.097657 31.199219-78 14.5-103.898438zm-249.300781-26.199219c16.898438-36 39.398438-56.601562 61.699219-56.601562s44.800781 20.601562 61.699219 56.601562c.011718.074219.046874.144532.101562.199219-21.242188 5.109375-41.960938 12.171875-61.902344 21.097657-19.917968-8.96875-40.644531-16.035157-61.898437-21.097657.199219 0 .199219-.101562.300781-.199219zm151.800781 146.199219c.003907 16-.863281 31.992188-2.601562 47.898438-12.464844 10.058593-25.484375 19.40625-39 28-15.597657 10.015625-31.832031 19.003906-48.601563 26.902343-16.734375-7.960937-32.96875-16.945312-48.597656-26.902343-13.5-8.617188-26.519531-17.964844-39-28-3.46875-31.839844-3.46875-63.960938 0-95.800781 26.953125-21.660157 56.355469-40.085938 87.597656-54.898438 16.738282 7.957031 32.96875 16.941406 48.601563 26.898438 13.5 8.617187 26.519531 17.964843 39 28 1.738281 15.910156 2.605469 31.898437 2.601562 47.902343zm19.097657-29.101562c9.792968 9.121093 19.011718 18.839843 27.601562 29.101562-8.589844 10.257813-17.808594 19.976563-27.601562 29.097657.601562-9.597657.902343-19.296876.902343-29.097657s-.300781-19.5-.902343-29.101562zm-25.800782 105.402343c-3.15625 17.3125-7.738281 34.335938-13.699218 50.898438-15.53125-3.507812-30.773438-8.1875-45.597657-14 11.796875-6.199219 23.597657-13 35.296875-20.398438 8.203125-5.300781 16.203125-10.800781 24-16.5zm-107.5 36.898438c-14.796875 5.886719-30.046875 10.570312-45.597656 14-5.960938-16.5625-10.542969-33.585938-13.699219-50.898438 7.699219 5.699219 15.699219 11.199219 24 16.398438 11.699219 7.5 23.5 14.300781 35.296875 20.5zm-85.097656-84.101562c-9.792969-9.121094-19.007812-18.839844-27.601562-29.097657 8.59375-10.261719 17.808593-19.980469 27.601562-29.101562-.601562 9.601562-.902344 19.300781-.902344 29.101562s.300782 19.5.902344 29.097657zm25.800781-105.398438c3.15625-17.316406 7.738281-34.339844 13.699219-50.898438 15.53125 3.503907 30.777344 8.183594 45.597656 14-11.796875 6.199219-23.597656 13-35.296875 20.398438-8.203125 5.300781-16.203125 10.800781-24 16.5zm142.699219-16.5c-11.601562-7.398438-23.402344-14.300781-35.300781-20.398438 14.796875-5.886718 30.046875-10.570312 45.601562-14 5.957031 16.558594 10.539063 33.582032 13.699219 50.898438-7.699219-5.699219-15.699219-11.199219-24-16.5zm-215.699219 66c-21.203125-33.601562-26.402343-63.699219-14.402343-82.5 9.601562-15 30.402343-23.101562 58.5-23.101562 7.523437.03125 15.039062.535156 22.5 1.5h.199218c-8.089844 23.523437-13.71875 47.820312-16.796875 72.5-15.410156 12.855468-29.757812 26.9375-42.902343 42.101562-2.5-3.398438-4.898438-6.898438-7.097657-10.5zm66.5 157.601562c-7.460937.96875-14.976562 1.46875-22.5 1.5-28.101562 0-48.902343-8-58.5-23.101562-12-18.800781-6.800781-48.898438 14.398438-82.5 2.199219-3.5 4.601562-7.101562 7.101562-10.601562 13.140625 15.167968 27.488281 29.246093 42.898438 42.101562 3.082031 24.683594 8.710937 48.980469 16.800781 72.5 0 .101562-.101562.101562-.199219.101562zm151.597657 15.398438c-16.898438 36-39.398438 56.601562-61.699219 56.601562s-44.800781-20.601562-61.699219-56.601562c-.011719-.074219-.046875-.144531-.101562-.199219 21.242187-5.109375 41.960937-12.171875 61.902343-21.101562 19.917969 8.972656 40.644531 16.039062 61.898438 21.101562-.199219 0-.199219.097657-.300781.199219zm94.699218-119.398438c21.203125 33.597657 26.402344 63.699219 14.402344 82.5-12 18.796876-41.5 26.699219-80.902344 21.5h-.199218c8.089843-23.523437 13.722656-47.820312 16.800781-72.5 15.410156-12.855468 29.757812-26.9375 42.898437-42.101562 2.402344 3.5 4.800782 7 7 10.601562zm-50-85.101562c-3.078125-24.683594-8.707031-48.980469-16.796875-72.5h.199219c39.398438-5.101562 68.898438 2.699219 80.898438 21.5s6.800781 48.898438-14.398438 82.5c-2.199219 3.5-4.601562 7.101562-7.101562 10.601562-13.082032-15.191406-27.398438-29.273437-42.800782-42.101562zm0 0"></path><path d="m197.480469 183.199219c-21.871094 0-39.601563 17.730469-39.601563 39.601562 0 21.871094 17.730469 39.597657 39.601563 39.597657 21.871093 0 39.601562-17.726563 39.601562-39.597657-.015625-21.867187-17.738281-39.585937-39.601562-39.601562zm0 59.199219c-10.824219 0-19.601563-8.773438-19.601563-19.597657s8.777344-19.601562 19.601563-19.601562 19.601562 8.777343 19.601562 19.601562c-.019531 10.816407-8.785156 19.582031-19.601562 19.597657zm0 0"></path></svg>
+            
+            
+          </span>
+              <h3 class="u-text u-text-5" spellcheck="false">Frontend</h3>
+              <p class="u-text u-text-6" spellcheck="false">We chose React because it makes it very easy to update the page based on updated information from the server. </p>
+            </div>
+          </div>
+          <div class="u-align-center u-container-style u-list-item u-repeater-item">
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-icon u-icon-circle u-text-white u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-0e14"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-0e14" style="enable-background:new 0 0 512 512;"><path style="fill:#F2F2F2;" d="M512,256c0,141.385-114.615,256-256,256C125.555,512,17.899,414.438,2.027,288.298  C0.69,277.723,0,266.94,0,256c0-20.041,2.299-39.549,6.656-58.264C33.029,84.428,134.656,0,256,0  c121.041,0,222.469,84.01,249.135,196.901c3.5,14.764,5.705,30.02,6.51,45.641C511.885,247.003,512,251.486,512,256z"></path><polygon style="fill:#3B8739;" points="243.195,276.559 243.195,210 185.553,176.721 127.912,210 127.912,276.559 185.553,309.838   "></polygon><path style="fill:#333333;" d="M470.204,266.459l37.564,21.692l-37.564,21.692l-57.637-33.28v-66.56l57.637-33.28l34.931,20.177  c3.5,14.764,5.705,30.02,6.51,45.641l-21.358,12.33v-23.186l-20.083-11.588l-20.083,11.588v23.186L470.204,266.459z"></path><polygon style="fill:#66A060;" points="481.392,249.74 481.392,236.82 470.203,230.36 459.013,236.82 459.013,249.74   470.203,256.201 "></polygon><path style="fill:#333333;" d="M100.686,210.004v87.771l-38.442-21.932v-44.993L43.05,219.763l-19.195,11.086v44.993L2.027,288.298  C0.69,277.723,0,266.94,0,256c0-20.041,2.299-39.549,6.656-58.264l36.394-21.013L100.686,210.004z"></path><rect x="127.906" y="210.001" transform="matrix(0.5 0.866 -0.866 0.5 303.4564 -39.0495)" style="fill:#6DA75D;" width="115.281" height="66.557"></rect><polygon style="fill:#55A344;" points="127.912,276.559 147.704,244.283 127.912,210 "></polygon><polygon style="fill:#639D57;" points="223.979,243.277 243.195,210 185.553,176.721 "></polygon><path style="fill:#333333;" d="M346.551,99.579v88.304l-19.32-11.16l-57.647,33.28v66.56l57.647,33.28l57.637-33.28V120.09  L346.551,99.579z M346.446,254.37l-19.216,11.097l-19.216-11.097v-22.183l19.216-11.097l19.216,11.097V254.37z"></path><g><path style="fill:#66A060;" d="M282.149,358.717c0,0-1.132-9.729-11.539-9.729c-10.408,0-17.534,1.357-17.534,7.127   s20.25,5.77,27.943,8.032c7.693,2.262,14.48,8.145,11.086,18.553c-3.394,10.408-13.802,11.539-29.866,11.539   s-19.685-13.35-19.685-18.553h9.05c0,0-1.132,8.145,9.502,9.502c10.634,1.357,20.802,2.121,22.173-6.108   c1.81-10.861-34.391-5.43-37.559-16.064c-2.676-8.985-1.132-20.815,16.969-22.626c18.101-1.811,28.056,6.181,28.056,18.101   L282.149,358.717z"></path><path style="fill:#66A060;" d="M194.723,401.131l20.008,11.551c10.053,5.804,22.619-1.451,22.619-13.059v-20.242v-37.253h-8.155   v55.227c0,6.339-6.862,10.302-12.353,7.131l-13.965-8.062v-58.94l51.043-29.467l51.043,29.467v58.94l-51.043,29.467l-14.704-8.489   l-9.602,3.872l24.305,14.033l59.198-34.179v-68.351L253.92,298.6l-59.198,34.179v68.352H194.723z"></path>
+</g></svg>
+            
+            
+          </span>
+              <h3 class="u-text u-text-7" spellcheck="false">Node.js Server<br>
+              </h3>
+              <p class="u-text u-text-8" spellcheck="false">The server contains all the code required to connect all the different components together.</p>
+            </div>
+          </div>
+        </div>
+        <p class="u-align-left u-text u-text-9">First, we have the MongoDB database. This is responsible for storing all of the data that we need for the Portal. All data we store falls into one of three categories. The first is the data of each Portal user. Our Portal is password protected, meaning one must log into the Portal before gaining access. To get this functionality to work, we must store the username and password of each user. The passwords are hashed with a salt using the bcrypt package to ensure effective security against password leaks. Second, we store data about each robot that is registered with the Portal. This data includes the name and secret key of the robot (see the Robot-Portal Communication section for more details on how this key is used), as well as the state of the robot. The state includes data such as the GPS coordinates of the robot, battery levels and whether the robot is currently connected to the Portal or not. The last category is notification data. Our Portal supports the ability to show notifications to the operators should something unexpected occur.<br>
+          <br>The second component of the Portal is the frontend application. The main Portal page (shown below) is a React Application. We chose React because it makes it very easy to update the page based on updated information from the server. The React app will send a HTTP request to the server every 5 seconds to get updated information about every robot that is stored on the database. It then separates all the robots into either “active”, if the robot is currently connected to the Portal, or “inactive” if not. The markers on the map display the current positions of all active robots based on their GPS coordinates. The markers will move as the GPS coordinates of the robots change.
+        </p>
+        <img src="images/portal.png" alt="" class="u-image u-image-default u-image-1" data-image-width="600" data-image-height="404">
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-3 u-section-15" id="sec-6a68">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-gutter-10 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-col">
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="279" data-image-height="637">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
+                  </div>
+                  <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
+                    <div class="u-container-layout u-valign-middle u-container-layout-2">
+                      <p class="u-text u-text-1" spellcheck="false">The tables on the right hand side display relevant information about each robot. Clicking a robot on either the “active” or “inactive” tables will populate the Robot Details table below and will zoom to the corresponding marker on the map if available. Once a robot is selected, the “Start Robot” and “Emergency Stop” buttons become active. Once one of these button is clicked a WebSocket event is sent to the server. The server will then forward the event on to the selected robot. This allows rudimentary remote control of every robot.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-align-left u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-3">
+                    <div class="u-container-layout u-container-layout-3">
+                      <p class="u-text u-text-2" spellcheck="false">In addition to the main page, we have a robot registration page that allows new robots to be registered with the Portal. This is the only way of getting new robots to display on the main page. All that is required is entering the name of the robot and the secret key associated with that robot.</p>
+                    </div>
+                  </div>
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-right-cell u-size-30 u-image-2" src="" data-image-width="482" data-image-height="285">
+                    <div class="u-container-layout u-valign-middle u-container-layout-4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-3 u-section-16" id="sec-2747">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-gutter-10 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-col">
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="377" data-image-height="296">
+                    <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
+                  </div>
+                  <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
+                    <div class="u-container-layout u-valign-middle u-container-layout-2">
+                      <p class="u-text u-text-1" spellcheck="false">The frontend application is password protected. This means that any operator must login before gaining access to the main Portal page. If a valid username and password is provided (based on information stored on the database), we save a Cookie on the user’s browser that allows the user’s session to persist until the cookie expires. The cookie provides access to the main page for the logged in user.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-30">
+                <div class="u-layout-row">
+                  <div class="u-align-left u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-3">
+                    <div class="u-container-layout u-valign-middle u-container-layout-3">
+                      <p class="u-text u-text-2" spellcheck="false">We also have a notifications system, which alerts the Operator whenever there are events that require their attention<br>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-right-cell u-size-30 u-image-2" src="" data-image-width="427" data-image-height="304">
+                    <div class="u-container-layout u-valign-middle u-container-layout-4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="u-clearfix u-custom-color-1 u-section-17" id="sec-b170">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h2 class="u-align-center u-text u-text-1">Robot-Portal Communication Protocol<br>
         </h2>
         <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -417,16 +646,17 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-3 u-section-11" id="sec-bdcc">
+    <section class="u-clearfix u-custom-color-1 u-section-18" id="sec-bdcc">
       <div class="u-clearfix u-sheet u-sheet-1">
         <p class="u-text u-text-1">The robot and the server communicate via WebSockets. WebSockets provides us with a full-duplex communication channel that allows for real-time data to be easily exchanged. This is because when a WebSocket connection is established, a permanent TCP tunnel is created through which data can be sent and received. It provides lower network overhead than other methods such as HTTP polling.<br>
+          <br>To ensure security of our system and prevent malicious users from pretending to be a robot, we added an authentication mechanism for each new WebSocket connection request. In order to successfully connect to the server as a robot, it must send a secret key along with its connection request. This secret key will be checked with our list of robots in the database and only if there exists a matching key will the connection be allowed. If there is no key, the connection will be refused.<br>
           <br>Data is sent by “emitting” an event containing the data you want to send. Similarly, data is received by listening for these “emitted” events.<br>
           <br>The robot is configured to listen to predefined events from the server such as the “start” event which sets the start flag to true allowing the robot’s state machine to transition from OFF to READY (see the section on the state machine) or the “emergency” event which sets the emergency flag to true.<br>
-          <br>Likewise, the server listens to events emitted by the robot. Currently there is only one called “robot_details”. For this event, the robot sends the server a collection of data representing the current state of the robot. This includes the latest GPS coordinates of the robot as well as the current state of the state machine and the current battery and grit levels.
+          <br>LIkewise, the server listens to events emitted by the robot. Currently there is only one called “robot_details”. For this event, the robot sends the server a collection of data representing the current state of the robot. This includes the latest GPS coordinates of the robot as well as the current state of the state machine and the current battery and grit levels.
         </p>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-1 u-section-12" id="sec-34ca">
+    <section class="u-clearfix u-custom-color-3 u-section-19" id="sec-34ca">
       <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-align-center u-text u-text-1">Gritting Mechanism<br>
         </h2>
@@ -434,7 +664,7 @@ details can be found below.
         </p>
         <div class="u-list u-repeater u-list-1">
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-7075"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-7075"><g id="V"><path d="m258.893 323.496-111.387-323.496h-137.856l183.545 512h125.259l183.896-512h-135.688z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-icon u-icon-circle u-text-white u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512 512" style=""><use xlink:href="#svg-7075"></use></svg><svg class="u-svg-content" viewBox="0 0 512 512" id="svg-7075"><g id="V"><path d="m258.893 323.496-111.387-323.496h-137.856l183.545 512h125.259l183.896-512h-135.688z"></path>
 </g></svg>
             
             
@@ -445,7 +675,7 @@ details can be found below.
             </div>
           </div>
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512.04108 512" style=""><use xlink:href="#svg-df8f"></use></svg><svg class="u-svg-content" viewBox="0 0 512.04108 512" id="svg-df8f"><path d="m509.5 2.519531c-3.332031-3.332031-8.734375-3.332031-12.066406 0l-63.855469 63.855469c-3.773437-4.800781-6.566406-10.292969-8.21875-16.171875-1.746094-4.511719-1.105469-9.597656 1.707031-13.535156 4.214844-2.941407 9.644532-3.503907 14.371094-1.492188 2.9375.816407 6.089844.003907 8.265625-2.128906 2.175781-2.136719 3.046875-5.269531 2.285156-8.222656s-3.039062-5.273438-5.976562-6.09375c-10.632813-3.863281-22.527344-1.613281-31.011719 5.871093-7.207031 8.105469-9.574219 19.429688-6.210938 29.742188 2.433594 8.863281 6.734376 17.109375 12.613282 24.179688l-20.480469 20.480468-18.132813-18.039062c-10.132812-9.671875-26.078124-9.671875-36.207031 0l-126.679687 126.679687-57.007813 57.011719c-.253906-.050781-.507812-.085938-.761719-.105469h-153.597656c-4.714844 0-8.535156 3.820313-8.535156 8.535157 0 4.710937 3.820312 8.53125 8.535156 8.53125h137.386719l-10.496094 10.496093-132.925781 132.933594c-1.601562 1.601563-2.5 3.769531-2.5 6.03125v72.40625c0 4.714844 3.820312 8.535156 8.535156 8.535156h60.335938c2.265625 0 4.433594-.902343 6.035156-2.5l266.425781-266.429687v81.195312h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535156 0 4.710938 3.820313 8.53125 8.53125 8.53125h17.066406v51.199219h-8.53125c-4.714843 0-8.535156 3.820313-8.535156 8.535157 0 4.710937 3.820313 8.53125 8.535156 8.53125h8.53125v93.867187c0 4.714844 3.820313 8.535156 8.535157 8.535156h153.597656c1.003906-.027343 1.996094-.226562 2.929687-.597656.273438-.105469.542969-.222656.800781-.359375.667969-.332031 1.292969-.75 1.851563-1.246094.1875-.171875.394531-.296875.5625-.476562.664063-.679688 1.207031-1.464844 1.605469-2.320313v-.105469c.1875-.554687.320312-1.125.402344-1.703124.183593-.523438.3125-1.066407.382812-1.613282v-247.578125c0-3.34375-1.957031-6.382812-5-7.765625l-93.867188-42.667968h-.128906c-.109375-.050782-.238281-.066407-.359375-.109376-.859375-.324218-1.765625-.507812-2.6875-.546874-.125 0-.230469-.066407-.355469-.066407h-29.996093l45.421875-45.417969c2.601562-2.632812 4.601562-5.800781 5.855468-9.28125.085938-.234374.160157-.476562.222657-.71875 3.234375-9.171874.867187-19.390624-6.078125-26.207031l-12.066406-12.0625 20.480468-20.480469c9.585938 8.320313 21.679688 13.207032 34.355469 13.875 7.285156.257813 14.367187-2.441406 19.628906-7.484374 7.484375-8.484376 9.738281-20.382813 5.871094-31.019532-.78125-2.980468-3.109375-5.3125-6.089844-6.09375s-6.152343.105469-8.296875 2.316406c-2.144531 2.214844-2.929687 5.414063-2.050781 8.367188 2.015625 4.726562 1.445313 10.15625-1.5 14.363281-4.832031 4.820313-17.546875 2.636719-29.707031-6.496093l63.855468-63.863282c1.621094-1.601562 2.535157-3.789062 2.535157-6.070312-.003907-2.28125-.917969-4.46875-2.542969-6.070313zm-193.085938 132.742188c10.113282-10.109375 26.652344-3.496094 50.699219 7.734375 11.601563 6.058594 23.933594 10.601562 36.691407 13.523437l-21.015626 20.992188c-10.097656 10.078125-26.617187 3.5-50.707031-7.730469-11.585937-6.046875-23.890625-10.601562-36.625-13.550781l20.949219-20.949219zm27.417969 81.195312-3.285156 3.285157c-10.09375 10.078124-26.613281 3.5-50.6875-7.730469-11.585937-6.046875-23.894531-10.605469-36.625-13.566407l20.941406-20.933593c10.105469-10.113281 26.632813-3.5 50.6875 7.730469 11.609375 6.039062 23.941407 10.574218 36.695313 13.5l-8.585938 8.585937zm-45.515625 45.535157c-10.121094 10.09375-26.648437 3.480468-50.6875-7.738282-11.59375-6.058594-23.90625-10.625-36.640625-13.59375l20.964844-20.96875c10.085937-10.078125 26.605469-3.488281 50.6875 7.75 11.609375 6.035156 23.941406 10.570313 36.695313 13.5zm-42.238281 42.238281c-10.121094 10.113281-26.640625 3.5-50.707031-7.730469-11.585938-6.046875-23.894532-10.601562-36.625-13.558594l20.949218-20.949218c10.113282-10.113282 26.660157-3.492188 50.695313 7.730468 11.609375 6.042969 23.941406 10.582032 36.695313 13.507813zm-42.234375 42.242187c-10.117188 10.101563-26.648438 3.488282-50.695312-7.730468-11.589844-6.0625-23.902344-10.632813-36.640626-13.601563l20.964844-20.96875c10.113282-10.09375 26.640625-3.480469 50.6875 7.75 11.609375 6.035156 23.941406 10.570313 36.695313 13.5zm-42.246094 42.246094c-10.105468 10.089844-26.625 3.5-50.699218-7.730469-11.585938-6.046875-23.890626-10.601562-36.625-13.558593l20.941406-20.957032c10.105468-10.121094 26.652344-3.5 50.6875 7.730469 11.609375 6.039063 23.941406 10.578125 36.695312 13.507813zm-42.222656 42.234375c-10.113281 10.101563-26.652344 3.480469-50.6875-7.742187-11.597656-6.054688-23.910156-10.621094-36.652344-13.59375l20.949219-20.949219c10.085937-10.101563 26.617187-3.503907 50.695313 7.734375 11.609374 6.035156 23.941406 10.570312 36.695312 13.496094zm-42.25 42.238281c-10.101562 10.085938-26.632812 3.5-50.6875-7.730468-6.382812-2.976563-12.902344-5.863282-19.371094-8.371094v-22.476563l3.667969-3.667969c10.105469-10.121093 26.652344-3.5 50.691406 7.730469 11.609375 6.035157 23.9375 10.570313 36.691407 13.5zm-70.058594 21.761719v-19.578125c4.027344 1.707031 8.125 3.644531 12.144532 5.53125 11.609374 6.035156 23.9375 10.570312 36.691406 13.5l-.5625.546875zm401.066406-39.628906v-32.425781l76.800782 34.90625v32.429687zm0-83.628907 76.800782 34.910157v32.425781l-76.800782-34.90625zm76.800782 16.164063-76.800782-34.910156v-32.425781l76.800782 34.910156zm0-51.199219-76.800782-34.910156v-32.429688l76.800782 34.910157zm-76.800782 137.410156 45.945313 20.882813h-45.945313zm76.800782-188.636718-76.800782-34.910156v-23.894532l76.800782 34.910156zm-93.867188-63.546875v273.066406h-42.667968v-268.929687l4.140624-4.136719zm14.148438-81.808594c-10.957032 1.398437-26.128906-5.667969-40.882813-12.546875-11.589843-6.042969-23.894531-10.597656-36.625-13.558594l20.941407-20.941406c3.378906-3.21875 8.6875-3.21875 12.066406 0l42.246094 42.242188c1.253906 1.3125 2.042968 3 2.253906 4.804687zm0 0"></path><path d="m153.601562 512.019531c4.710938 0 8.53125-3.820312 8.53125-8.535156 0-4.710937-3.820312-8.53125-8.53125-8.53125h-17.066406c-4.714844 0-8.535156 3.820313-8.535156 8.53125 0 4.714844 3.820312 8.535156 8.535156 8.535156zm0 0"></path><path d="m196.265625 494.953125c-4.710937 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820313 8.535156 8.53125 8.535156h17.066406c4.714844 0 8.535157-3.820312 8.535157-8.535156 0-4.710937-3.820313-8.53125-8.535157-8.53125zm0 0"></path><path d="m256 512.019531h17.066406c4.714844 0 8.535156-3.820312 8.535156-8.535156 0-4.710937-3.820312-8.53125-8.535156-8.53125h-17.066406c-4.710938 0-8.535156 3.820313-8.535156 8.53125 0 4.714844 3.824218 8.535156 8.535156 8.535156zm0 0"></path><path d="m162.132812 469.351562c0 4.714844 3.820313 8.535157 8.535157 8.535157h17.066406c4.710937 0 8.53125-3.820313 8.53125-8.535157 0-4.710937-3.820313-8.53125-8.53125-8.53125h-17.066406c-4.714844 0-8.535157 3.820313-8.535157 8.53125zm0 0"></path><path d="m256 469.351562c0-4.710937-3.820312-8.53125-8.535156-8.53125h-17.066406c-4.710938 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820312 8.535157 8.53125 8.535157h17.066406c4.714844 0 8.535156-3.820313 8.535156-8.535157zm0 0"></path><path d="m307.199219 477.886719c4.714843 0 8.535156-3.820313 8.535156-8.535157 0-4.710937-3.820313-8.53125-8.535156-8.53125h-17.066407c-4.710937 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820313 8.535157 8.53125 8.535157zm0 0"></path><path d="m187.734375 426.683594c-4.714844 0-8.535156 3.824218-8.535156 8.535156s3.820312 8.535156 8.535156 8.535156h17.066406c4.710938 0 8.53125-3.824218 8.53125-8.535156s-3.820312-8.535156-8.53125-8.535156zm0 0"></path><path d="m247.464844 443.753906h17.070312c4.710938 0 8.53125-3.824218 8.53125-8.535156s-3.820312-8.535156-8.53125-8.535156h-17.070312c-4.710938 0-8.53125 3.824218-8.53125 8.535156s3.820312 8.535156 8.53125 8.535156zm0 0"></path><path d="m324.265625 426.683594h-17.066406c-4.710938 0-8.53125 3.824218-8.53125 8.535156s3.820312 8.535156 8.53125 8.535156h17.066406c4.714844 0 8.535156-3.824218 8.535156-8.535156s-3.820312-8.535156-8.535156-8.535156zm0 0"></path><path d="m230.398438 392.550781h-17.066407c-4.710937 0-8.53125 3.820313-8.53125 8.535157 0 4.710937 3.820313 8.53125 8.53125 8.53125h17.066407c4.714843 0 8.535156-3.820313 8.535156-8.53125 0-4.714844-3.820313-8.535157-8.535156-8.535157zm0 0"></path><path d="m298.667969 401.085938c0-4.714844-3.820313-8.535157-8.535157-8.535157h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535157 0 4.710937 3.820313 8.53125 8.53125 8.53125h17.066406c4.714844 0 8.535157-3.820313 8.535157-8.53125zm0 0"></path><path d="m315.734375 358.417969h-17.066406c-4.714844 0-8.535157 3.820312-8.535157 8.535156 0 4.710937 3.820313 8.53125 8.535157 8.53125h17.066406c4.710937 0 8.53125-3.820313 8.53125-8.53125 0-4.714844-3.820313-8.535156-8.53125-8.535156zm0 0"></path><path d="m247.464844 358.417969c-4.710938 0-8.53125 3.820312-8.53125 8.535156 0 4.710937 3.820312 8.53125 8.53125 8.53125h17.070312c4.710938 0 8.53125-3.820313 8.53125-8.53125 0-4.714844-3.820312-8.535156-8.53125-8.535156zm0 0"></path><path d="m290.132812 324.285156h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535156 0 4.710938 3.820313 8.53125 8.53125 8.53125h17.066406c4.714844 0 8.535157-3.820312 8.535157-8.53125 0-4.714843-3.820313-8.535156-8.535157-8.535156zm0 0"></path></svg>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-icon u-icon-circle u-text-white u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 512.04108 512" style=""><use xlink:href="#svg-df8f"></use></svg><svg class="u-svg-content" viewBox="0 0 512.04108 512" id="svg-df8f"><path d="m509.5 2.519531c-3.332031-3.332031-8.734375-3.332031-12.066406 0l-63.855469 63.855469c-3.773437-4.800781-6.566406-10.292969-8.21875-16.171875-1.746094-4.511719-1.105469-9.597656 1.707031-13.535156 4.214844-2.941407 9.644532-3.503907 14.371094-1.492188 2.9375.816407 6.089844.003907 8.265625-2.128906 2.175781-2.136719 3.046875-5.269531 2.285156-8.222656s-3.039062-5.273438-5.976562-6.09375c-10.632813-3.863281-22.527344-1.613281-31.011719 5.871093-7.207031 8.105469-9.574219 19.429688-6.210938 29.742188 2.433594 8.863281 6.734376 17.109375 12.613282 24.179688l-20.480469 20.480468-18.132813-18.039062c-10.132812-9.671875-26.078124-9.671875-36.207031 0l-126.679687 126.679687-57.007813 57.011719c-.253906-.050781-.507812-.085938-.761719-.105469h-153.597656c-4.714844 0-8.535156 3.820313-8.535156 8.535157 0 4.710937 3.820312 8.53125 8.535156 8.53125h137.386719l-10.496094 10.496093-132.925781 132.933594c-1.601562 1.601563-2.5 3.769531-2.5 6.03125v72.40625c0 4.714844 3.820312 8.535156 8.535156 8.535156h60.335938c2.265625 0 4.433594-.902343 6.035156-2.5l266.425781-266.429687v81.195312h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535156 0 4.710938 3.820313 8.53125 8.53125 8.53125h17.066406v51.199219h-8.53125c-4.714843 0-8.535156 3.820313-8.535156 8.535157 0 4.710937 3.820313 8.53125 8.535156 8.53125h8.53125v93.867187c0 4.714844 3.820313 8.535156 8.535157 8.535156h153.597656c1.003906-.027343 1.996094-.226562 2.929687-.597656.273438-.105469.542969-.222656.800781-.359375.667969-.332031 1.292969-.75 1.851563-1.246094.1875-.171875.394531-.296875.5625-.476562.664063-.679688 1.207031-1.464844 1.605469-2.320313v-.105469c.1875-.554687.320312-1.125.402344-1.703124.183593-.523438.3125-1.066407.382812-1.613282v-247.578125c0-3.34375-1.957031-6.382812-5-7.765625l-93.867188-42.667968h-.128906c-.109375-.050782-.238281-.066407-.359375-.109376-.859375-.324218-1.765625-.507812-2.6875-.546874-.125 0-.230469-.066407-.355469-.066407h-29.996093l45.421875-45.417969c2.601562-2.632812 4.601562-5.800781 5.855468-9.28125.085938-.234374.160157-.476562.222657-.71875 3.234375-9.171874.867187-19.390624-6.078125-26.207031l-12.066406-12.0625 20.480468-20.480469c9.585938 8.320313 21.679688 13.207032 34.355469 13.875 7.285156.257813 14.367187-2.441406 19.628906-7.484374 7.484375-8.484376 9.738281-20.382813 5.871094-31.019532-.78125-2.980468-3.109375-5.3125-6.089844-6.09375s-6.152343.105469-8.296875 2.316406c-2.144531 2.214844-2.929687 5.414063-2.050781 8.367188 2.015625 4.726562 1.445313 10.15625-1.5 14.363281-4.832031 4.820313-17.546875 2.636719-29.707031-6.496093l63.855468-63.863282c1.621094-1.601562 2.535157-3.789062 2.535157-6.070312-.003907-2.28125-.917969-4.46875-2.542969-6.070313zm-193.085938 132.742188c10.113282-10.109375 26.652344-3.496094 50.699219 7.734375 11.601563 6.058594 23.933594 10.601562 36.691407 13.523437l-21.015626 20.992188c-10.097656 10.078125-26.617187 3.5-50.707031-7.730469-11.585937-6.046875-23.890625-10.601562-36.625-13.550781l20.949219-20.949219zm27.417969 81.195312-3.285156 3.285157c-10.09375 10.078124-26.613281 3.5-50.6875-7.730469-11.585937-6.046875-23.894531-10.605469-36.625-13.566407l20.941406-20.933593c10.105469-10.113281 26.632813-3.5 50.6875 7.730469 11.609375 6.039062 23.941407 10.574218 36.695313 13.5l-8.585938 8.585937zm-45.515625 45.535157c-10.121094 10.09375-26.648437 3.480468-50.6875-7.738282-11.59375-6.058594-23.90625-10.625-36.640625-13.59375l20.964844-20.96875c10.085937-10.078125 26.605469-3.488281 50.6875 7.75 11.609375 6.035156 23.941406 10.570313 36.695313 13.5zm-42.238281 42.238281c-10.121094 10.113281-26.640625 3.5-50.707031-7.730469-11.585938-6.046875-23.894532-10.601562-36.625-13.558594l20.949218-20.949218c10.113282-10.113282 26.660157-3.492188 50.695313 7.730468 11.609375 6.042969 23.941406 10.582032 36.695313 13.507813zm-42.234375 42.242187c-10.117188 10.101563-26.648438 3.488282-50.695312-7.730468-11.589844-6.0625-23.902344-10.632813-36.640626-13.601563l20.964844-20.96875c10.113282-10.09375 26.640625-3.480469 50.6875 7.75 11.609375 6.035156 23.941406 10.570313 36.695313 13.5zm-42.246094 42.246094c-10.105468 10.089844-26.625 3.5-50.699218-7.730469-11.585938-6.046875-23.890626-10.601562-36.625-13.558593l20.941406-20.957032c10.105468-10.121094 26.652344-3.5 50.6875 7.730469 11.609375 6.039063 23.941406 10.578125 36.695312 13.507813zm-42.222656 42.234375c-10.113281 10.101563-26.652344 3.480469-50.6875-7.742187-11.597656-6.054688-23.910156-10.621094-36.652344-13.59375l20.949219-20.949219c10.085937-10.101563 26.617187-3.503907 50.695313 7.734375 11.609374 6.035156 23.941406 10.570312 36.695312 13.496094zm-42.25 42.238281c-10.101562 10.085938-26.632812 3.5-50.6875-7.730468-6.382812-2.976563-12.902344-5.863282-19.371094-8.371094v-22.476563l3.667969-3.667969c10.105469-10.121093 26.652344-3.5 50.691406 7.730469 11.609375 6.035157 23.9375 10.570313 36.691407 13.5zm-70.058594 21.761719v-19.578125c4.027344 1.707031 8.125 3.644531 12.144532 5.53125 11.609374 6.035156 23.9375 10.570312 36.691406 13.5l-.5625.546875zm401.066406-39.628906v-32.425781l76.800782 34.90625v32.429687zm0-83.628907 76.800782 34.910157v32.425781l-76.800782-34.90625zm76.800782 16.164063-76.800782-34.910156v-32.425781l76.800782 34.910156zm0-51.199219-76.800782-34.910156v-32.429688l76.800782 34.910157zm-76.800782 137.410156 45.945313 20.882813h-45.945313zm76.800782-188.636718-76.800782-34.910156v-23.894532l76.800782 34.910156zm-93.867188-63.546875v273.066406h-42.667968v-268.929687l4.140624-4.136719zm14.148438-81.808594c-10.957032 1.398437-26.128906-5.667969-40.882813-12.546875-11.589843-6.042969-23.894531-10.597656-36.625-13.558594l20.941407-20.941406c3.378906-3.21875 8.6875-3.21875 12.066406 0l42.246094 42.242188c1.253906 1.3125 2.042968 3 2.253906 4.804687zm0 0"></path><path d="m153.601562 512.019531c4.710938 0 8.53125-3.820312 8.53125-8.535156 0-4.710937-3.820312-8.53125-8.53125-8.53125h-17.066406c-4.714844 0-8.535156 3.820313-8.535156 8.53125 0 4.714844 3.820312 8.535156 8.535156 8.535156zm0 0"></path><path d="m196.265625 494.953125c-4.710937 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820313 8.535156 8.53125 8.535156h17.066406c4.714844 0 8.535157-3.820312 8.535157-8.535156 0-4.710937-3.820313-8.53125-8.535157-8.53125zm0 0"></path><path d="m256 512.019531h17.066406c4.714844 0 8.535156-3.820312 8.535156-8.535156 0-4.710937-3.820312-8.53125-8.535156-8.53125h-17.066406c-4.710938 0-8.535156 3.820313-8.535156 8.53125 0 4.714844 3.824218 8.535156 8.535156 8.535156zm0 0"></path><path d="m162.132812 469.351562c0 4.714844 3.820313 8.535157 8.535157 8.535157h17.066406c4.710937 0 8.53125-3.820313 8.53125-8.535157 0-4.710937-3.820313-8.53125-8.53125-8.53125h-17.066406c-4.714844 0-8.535157 3.820313-8.535157 8.53125zm0 0"></path><path d="m256 469.351562c0-4.710937-3.820312-8.53125-8.535156-8.53125h-17.066406c-4.710938 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820312 8.535157 8.53125 8.535157h17.066406c4.714844 0 8.535156-3.820313 8.535156-8.535157zm0 0"></path><path d="m307.199219 477.886719c4.714843 0 8.535156-3.820313 8.535156-8.535157 0-4.710937-3.820313-8.53125-8.535156-8.53125h-17.066407c-4.710937 0-8.53125 3.820313-8.53125 8.53125 0 4.714844 3.820313 8.535157 8.53125 8.535157zm0 0"></path><path d="m187.734375 426.683594c-4.714844 0-8.535156 3.824218-8.535156 8.535156s3.820312 8.535156 8.535156 8.535156h17.066406c4.710938 0 8.53125-3.824218 8.53125-8.535156s-3.820312-8.535156-8.53125-8.535156zm0 0"></path><path d="m247.464844 443.753906h17.070312c4.710938 0 8.53125-3.824218 8.53125-8.535156s-3.820312-8.535156-8.53125-8.535156h-17.070312c-4.710938 0-8.53125 3.824218-8.53125 8.535156s3.820312 8.535156 8.53125 8.535156zm0 0"></path><path d="m324.265625 426.683594h-17.066406c-4.710938 0-8.53125 3.824218-8.53125 8.535156s3.820312 8.535156 8.53125 8.535156h17.066406c4.714844 0 8.535156-3.824218 8.535156-8.535156s-3.820312-8.535156-8.535156-8.535156zm0 0"></path><path d="m230.398438 392.550781h-17.066407c-4.710937 0-8.53125 3.820313-8.53125 8.535157 0 4.710937 3.820313 8.53125 8.53125 8.53125h17.066407c4.714843 0 8.535156-3.820313 8.535156-8.53125 0-4.714844-3.820313-8.535157-8.535156-8.535157zm0 0"></path><path d="m298.667969 401.085938c0-4.714844-3.820313-8.535157-8.535157-8.535157h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535157 0 4.710937 3.820313 8.53125 8.53125 8.53125h17.066406c4.714844 0 8.535157-3.820313 8.535157-8.53125zm0 0"></path><path d="m315.734375 358.417969h-17.066406c-4.714844 0-8.535157 3.820312-8.535157 8.535156 0 4.710937 3.820313 8.53125 8.535157 8.53125h17.066406c4.710937 0 8.53125-3.820313 8.53125-8.53125 0-4.714844-3.820313-8.535156-8.53125-8.535156zm0 0"></path><path d="m247.464844 358.417969c-4.710938 0-8.53125 3.820312-8.53125 8.535156 0 4.710937 3.820312 8.53125 8.53125 8.53125h17.070312c4.710938 0 8.53125-3.820313 8.53125-8.53125 0-4.714844-3.820312-8.535156-8.53125-8.535156zm0 0"></path><path d="m290.132812 324.285156h-17.066406c-4.710937 0-8.53125 3.820313-8.53125 8.535156 0 4.710938 3.820313 8.53125 8.53125 8.53125h17.066406c4.714844 0 8.535157-3.820312 8.535157-8.53125 0-4.714843-3.820313-8.535156-8.535157-8.535156zm0 0"></path></svg>
             
             
           </span>
@@ -456,7 +686,7 @@ details can be found below.
             </div>
           </div>
           <div class="u-align-center u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-icon u-icon-circle u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 60 51" style=""><use xlink:href="#svg-7b00"></use></svg><svg class="u-svg-content" viewBox="0 0 60 51" id="svg-7b00"><g id="022---Spin-Arrow"><path id="Shape" d="m24.106 35.687c-5.4501988-.5082321-10.7552715-2.0418039-15.636-4.52-.48766743-.2595738-1.09342617-.0746674-1.353.413s-.07466743 1.0934262.413 1.353c5.1071867 2.5975397 10.6592875 4.2064411 16.364 4.742.5400752.0428927 1.0160835-.3521012 1.0735327-.8908225.0574491-.5387212-.3245577-1.0252138-.8615327-1.0971775z"></path><path id="Shape" d="m30 4c-8.04 0-15.53 1.891-20.549 5.188-.29867404.19649607-.46983083.53740663-.44899726.894314.02083358.3569073.2304924.6755887.55000001.836.31950762.1604112.70032325.1381821.99899725-.058314 4.699-3.089 11.789-4.86 19.449-4.86.5522847 0 1-.44771525 1-1s-.4477153-1-1-1z"></path><path id="Shape" d="m30 0c-16.542 0-30 7.626-30 17v12c0 8.893 11.541 16.071 27 16.915v4.085c0 .5522847.4477153 1 1 1 .468 0 .061.2 7.536-5.286 14.192-1.48 24.464-8.482 24.464-16.714v-12c0-9.374-13.458-17-30-17zm-1.963 43.96c-14.6-.541-26.037-7.113-26.037-14.96v-5.853c5.053 7.445 16.821 10.473 25.963 10.812.2715674.0100549.5355318-.0908461.7311487-.2794833.1956168-.1886373.3060374-.4487633.3058513-.7205167v-2.984c9.01 6.616 1.267.927 12.309 9.025l-12.309 9.026v-3.066c.0003685-.5381522-.4252162-.9800885-.963-1zm-23.63-20.96c4.464-5.4 14.593-9 25.593-9s21.132 3.6 25.594 9c-3.8 4.582-11.625 7.907-20.758 8.777l-6.244-4.586c-.3042653-.2235002-.7084651-.2565939-1.0450327-.0855618-.3365675.1710321-.5481246.5170325-.5469673.8945618v3.912c-9.846-.57-18.517-3.999-22.593-8.912zm53.593 6c0 6.392-7.951 12.156-19.039 14.2l4.63-3.4c.256951-.1883673.4087659-.4878998.4087659-.8065s-.1518149-.6181327-.4087659-.8065l-6.38-4.68c7.458-1.038 16.623-4.216 20.789-10.373zm-1.211-7.7c-10.953-12.386-42.617-12.394-53.578 0-.77539127-1.3016371-1.19315257-2.7850174-1.211-4.3 0-8.271 12.561-15 28-15s28 6.729 28 15c-.0178474 1.5149826-.4356087 2.9983629-1.211 4.3z"></path>
+            <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-icon u-icon-circle u-text-white u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 60 51" style=""><use xlink:href="#svg-7b00"></use></svg><svg class="u-svg-content" viewBox="0 0 60 51" id="svg-7b00"><g id="022---Spin-Arrow"><path id="Shape" d="m24.106 35.687c-5.4501988-.5082321-10.7552715-2.0418039-15.636-4.52-.48766743-.2595738-1.09342617-.0746674-1.353.413s-.07466743 1.0934262.413 1.353c5.1071867 2.5975397 10.6592875 4.2064411 16.364 4.742.5400752.0428927 1.0160835-.3521012 1.0735327-.8908225.0574491-.5387212-.3245577-1.0252138-.8615327-1.0971775z"></path><path id="Shape" d="m30 4c-8.04 0-15.53 1.891-20.549 5.188-.29867404.19649607-.46983083.53740663-.44899726.894314.02083358.3569073.2304924.6755887.55000001.836.31950762.1604112.70032325.1381821.99899725-.058314 4.699-3.089 11.789-4.86 19.449-4.86.5522847 0 1-.44771525 1-1s-.4477153-1-1-1z"></path><path id="Shape" d="m30 0c-16.542 0-30 7.626-30 17v12c0 8.893 11.541 16.071 27 16.915v4.085c0 .5522847.4477153 1 1 1 .468 0 .061.2 7.536-5.286 14.192-1.48 24.464-8.482 24.464-16.714v-12c0-9.374-13.458-17-30-17zm-1.963 43.96c-14.6-.541-26.037-7.113-26.037-14.96v-5.853c5.053 7.445 16.821 10.473 25.963 10.812.2715674.0100549.5355318-.0908461.7311487-.2794833.1956168-.1886373.3060374-.4487633.3058513-.7205167v-2.984c9.01 6.616 1.267.927 12.309 9.025l-12.309 9.026v-3.066c.0003685-.5381522-.4252162-.9800885-.963-1zm-23.63-20.96c4.464-5.4 14.593-9 25.593-9s21.132 3.6 25.594 9c-3.8 4.582-11.625 7.907-20.758 8.777l-6.244-4.586c-.3042653-.2235002-.7084651-.2565939-1.0450327-.0855618-.3365675.1710321-.5481246.5170325-.5469673.8945618v3.912c-9.846-.57-18.517-3.999-22.593-8.912zm53.593 6c0 6.392-7.951 12.156-19.039 14.2l4.63-3.4c.256951-.1883673.4087659-.4878998.4087659-.8065s-.1518149-.6181327-.4087659-.8065l-6.38-4.68c7.458-1.038 16.623-4.216 20.789-10.373zm-1.211-7.7c-10.953-12.386-42.617-12.394-53.578 0-.77539127-1.3016371-1.19315257-2.7850174-1.211-4.3 0-8.271 12.561-15 28-15s28 6.729 28 15c-.0178474 1.5149826-.4356087 2.9983629-1.211 4.3z"></path>
 </g></svg>
             
             
@@ -470,11 +700,11 @@ details can be found below.
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-custom-color-1 u-section-13" id="sec-edaa">
+    <section class="u-clearfix u-custom-color-3 u-section-20" id="sec-edaa">
       <div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-video u-video-contain u-video-1">
           <div class="embed-responsive embed-responsive-1">
-            <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" class="embed-responsive-item" src="https://drive.google.com/file/d/1vkKcYtZ3guMTpQHmC8daftJhnTGLGv1F/preview" allowfullscreen="" frameborder="0"></iframe>
+            <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" class="embed-responsive-item" src="https://www.youtube.com/embed/EEUPKjl159E?playlist=EEUPKjl159E&amp;loop=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=0&amp;autoplay=1" allowfullscreen="" frameborder="0"></iframe>
           </div>
         </div>
       </div>
