@@ -34,6 +34,7 @@
     
     
     
+    
     <script type="application/ld+json">{
 		"@context": "http://schema.org",
 		"@type": "Organization",
@@ -492,7 +493,7 @@ be well tested being open-source and free to use.<br>
             <div class="u-layout-col">
               <div class="u-size-30">
                 <div class="u-layout-row">
-                  <div class="u-container-style u-image u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="448" data-image-height="319">
+                  <div class="u-container-style u-image u-image-contain u-layout-cell u-left-cell u-size-30 u-image-1" src="" data-image-width="2303" data-image-height="1210">
                     <div class="u-container-layout u-valign-middle u-container-layout-1"></div>
                   </div>
                   <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
@@ -708,6 +709,16 @@ be well tested being open-source and free to use.<br>
           <br>The robot is configured to listen to predefined events from the server such as the “start” event which sets the start flag to true allowing the robot’s state machine to transition from OFF to READY (see the section on the state machine) or the “emergency” event which sets the emergency flag to true.<br>
           <br>LIkewise, the server listens to events emitted by the robot. Currently there is only one called “robot_details”. For this event, the robot sends the server a collection of data representing the current state of the robot. This includes the latest GPS coordinates of the robot as well as the current state of the state machine and the current battery and grit levels.
         </p>
+      </div>
+    </section>
+    <section class="u-align-center u-clearfix u-custom-color-1 u-section-21" id="sec-e9f9">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h2 class="u-text u-text-1">Simulation<br>
+        </h2>
+        <p class="u-align-left u-text u-text-2">It is always a good idea to test your robot before building it and running it in the real world. It can highlight issues in your hardware or software but it can also possibly save you thousands of pounds in repair cost for each failed run in the real world. When you have tested the robot in simulation you can be highly certain that your robot will not fall over or drive into an obstacle at high speed.<br>
+          <br>For our robot we created realistic environments where we tested separate parts of our system as well as how these separate parts work together.
+        </p>
+        <img src="images/Screenshotfrom2021-04-0116-01-59.png" alt="" class="u-image u-image-default u-image-1" data-image-width="2011" data-image-height="1047">
       </div>
     </section>
     

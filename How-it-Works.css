@@ -1474,8 +1474,8 @@
 
 .u-section-13 .u-image-1 {
   min-height: 315px;
-  background-image: url("images/multiple-human.png");
-  background-position: 50% 0%;
+  background-image: url("images/Screenshotfrom2021-04-0115-33-13.png");
+  background-position: 50% 50%;
 }
 
 .u-section-13 .u-container-layout-1 {
@@ -2297,4 +2297,47 @@
 
 .u-section-20 .u-text-1 {
   margin: 0 0 30px;
+}.u-section-21 {
+  background-image: none;
+}
+
+.u-section-21 .u-sheet-1 {
+  min-height: 595px;
+}
+
+.u-section-21 .u-text-1 {
+  font-weight: 700;
+  margin: 21px 0 0;
+}
+
+.u-section-21 .u-text-2 {
+  margin: 20px 0 0;
+}
+
+.u-section-21 .u-image-1 {
+  width: 570px;
+  height: 297px;
+  margin: 30px auto 60px;
+}
+
+@media (max-width: 767px) {
+  .u-section-21 .u-sheet-1 {
+    min-height: 579px;
+  }
+
+  .u-section-21 .u-image-1 {
+    width: 540px;
+    height: 281px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-21 .u-sheet-1 {
+    min-height: 475px;
+  }
+
+  .u-section-21 .u-image-1 {
+    width: 340px;
+    height: 177px;
+  }
 }
